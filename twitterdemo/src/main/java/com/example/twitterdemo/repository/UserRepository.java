@@ -1,4 +1,10 @@
 package com.example.twitterdemo.repository;
 
-public interface UserRepository {
+import com.example.twitterdemo.model.User;
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserRepository extends CrudRepository<User, Long> {
+
+    User findByUsername(String username);
+
 }
