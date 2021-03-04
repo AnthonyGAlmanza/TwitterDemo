@@ -30,7 +30,7 @@ public class UserController {
                           Model model){
         User loggedInUser = userService.getLoggedInUser();
         User user = userService.findByUsername(username);
-        List<Tweet> tweets = tweetService.findAllByUser(user);
+        List<TweetDisplay> tweets = tweetService.findAllByUser(user);
         List<User> following = loggedInUser.getFollowing();
         boolean isFollowing = false;
         for(User followedUser : following){
