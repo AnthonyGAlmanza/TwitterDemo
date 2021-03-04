@@ -1,6 +1,7 @@
 package com.example.twitterdemo.controller;
 
 import com.example.twitterdemo.model.Tweet;
+import com.example.twitterdemo.model.TweetDisplay;
 import com.example.twitterdemo.model.User;
 import com.example.twitterdemo.service.TweetService;
 import com.example.twitterdemo.service.UserService;
@@ -65,6 +66,7 @@ public class UserController {
             model.addAttribute("filter", "all");
         }
 //        List<User> users = userService.findAll();
+        SetFollowingStatus(users, usersFollowing, model);
         model.addAttribute("users", users);
         SetTweetCounts(users, model);
         return "users";
@@ -73,7 +75,7 @@ public class UserController {
     private void SetTweetCounts(List<User> users, Model model) {
         HashMap<String,Integer> tweetCounts = new HashMap<>();
         for (User user : users) {
-            List<Tweet> tweets = tweetService.findAllByUser(user);
+            List<TweetDisplay> tweets = tweetService.findAllByUser(user);
             tweetCounts.put(user.getUsername(), tweets.size());
         }
         model.addAttribute("tweetCounts", tweetCounts);
