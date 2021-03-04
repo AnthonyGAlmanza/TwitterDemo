@@ -2,6 +2,7 @@ package com.example.twitterdemo.service;
 
 import com.example.twitterdemo.model.Tag;
 import com.example.twitterdemo.model.Tweet;
+import com.example.twitterdemo.model.TweetDisplay;
 import com.example.twitterdemo.model.User;
 import com.example.twitterdemo.repository.TagRepository;
 import com.example.twitterdemo.repository.TweetRepository;
@@ -23,6 +24,7 @@ public class TweetService {
 
     @Autowired
     private TagRepository tagRepository;
+
 
     public List<Tweet> findAll() {
         List<Tweet> tweets = tweetRepository.findAllByOrderByCreatedAtDesc();
@@ -66,10 +68,16 @@ public class TweetService {
         tweet.setTags(tags);
     }
 
-    private List<Tweet> formatTweets(List<Tweet> tweets) {
+    private List<TweetDisplay> formatTweets(List<Tweet> tweets) {
         addTagLinks(tweets);
         shortenLinks(tweets);
-        return tweets;
+        List<TweetDisplay> displayTweets = formatTimestamps(tweets);
+        return displayTweets;
+    }
+
+    private List<TweetDisplay>  formatTimestamps(List<Tweet> tweets) {
+        List<TweetDisplay> response = new ArrayList<>();
+        PrettyTime prettyTime = new PrettyTime();
     }
 
     private void addTagLinks(List<Tweet> tweets) {
