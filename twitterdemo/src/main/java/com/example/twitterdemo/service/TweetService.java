@@ -6,13 +6,13 @@ import com.example.twitterdemo.model.TweetDisplay;
 import com.example.twitterdemo.model.User;
 import com.example.twitterdemo.repository.TagRepository;
 import com.example.twitterdemo.repository.TweetRepository;
+import org.ocpsoft.prettytime.PrettyTime;
+import org.ocpsoft.prettytime.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,22 +26,22 @@ public class TweetService {
     private TagRepository tagRepository;
 
 
-    public List<Tweet> findAll() {
+    public List<TweetDisplay> findAll() {
         List<Tweet> tweets = tweetRepository.findAllByOrderByCreatedAtDesc();
         return formatTweets(tweets);
     }
 
-    public List<Tweet> findAllByUser(User user) {
+    public List<TweetDisplay> findAllByUser(User user) {
         List<Tweet> tweets = tweetRepository.findAllByUserOrderByCreatedAtDesc(user);
-        return tweets;
+        return formatTweets(tweets);
     }
 
-    public List<Tweet> findAllByUsers(List<User> users) {
+    public List<TweetDisplay> findAllByUsers(List<User> users) {
         List<Tweet> tweets = tweetRepository.findAllByUserInOrderByCreatedAtDesc(users);
-        return tweets;
+        return formatTweets(tweets);
     }
 
-    public List<Tweet> findAllWithTag(String tag) {
+    public List<TweetDisplay> findAllWithTag(String tag) {
         List<Tweet> tweets = tweetRepository.findByTags_PhraseOrderByCreatedAtDesc(tag);
         return formatTweets(tweets);
     }
@@ -75,9 +75,26 @@ public class TweetService {
         return displayTweets;
     }
 
-    private List<TweetDisplay>  formatTimestamps(List<Tweet> tweets) {
+    private List<TweetDisplay> formatTimestamps(List<Tweet> tweets) {
         List<TweetDisplay> response = new ArrayList<>();
         PrettyTime prettyTime = new PrettyTime();
+        SimpleDateFormat simpleDate = new SimpleDateFormat("m/d/yy");
+        Date now = new Date();
+        for(Tweet tweet : tweets) {
+            TweetDisplay tweetDisplay = new TweetDisplay();
+            tweetDisplay.setUser(tweet.getUser());
+            tweetDisplay.setMessage(tweet.getMessage());
+            tweetDisplay.setTags(tweet.getTags());
+            long diffInMillies = Math.abs(now.getTime() - tweet.getCreatedAt().getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+            if (diff > 3) {
+                tweetDisplay.setDate(simpleDate.format(tweet.getCreatedAt()));
+            } else {
+                tweetDisplay.setDate(prettyTime.format(tweet.getCreatedAt()));
+            }
+            response.add(tweetDisplay);
+        }
+        return response;
     }
 
     private void addTagLinks(List<Tweet> tweets) {
