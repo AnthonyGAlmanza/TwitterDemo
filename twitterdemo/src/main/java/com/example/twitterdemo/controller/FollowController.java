@@ -30,11 +30,11 @@ public class FollowController {
     @PostMapping(value = "/unfollow/{username}")
     public String unfollow(@PathVariable(value = "username") String username, HttpServletRequest request){
         User loggedInUser = userService.getLoggedInUser();
-        User userToUnFollow = userService.findByUsername(username);
-        List<User> followers = userToUnFollow.getFollowers();
+        User userToUnfollow = userService.findByUsername(username);
+        List<User> followers = userToUnfollow.getFollowers();
         followers.remove(loggedInUser);
-        userToUnFollow.setFollowers(followers);
-        userService.save(userToUnFollow);
+        userToUnfollow.setFollowers(followers);
+        userService.save(userToUnfollow);
         return "redirect:" + request.getHeader("Referer");
     }
 
