@@ -60,4 +60,17 @@ public class UserController {
         model.addAttribute("tweetCounts", tweetCounts);
     }
 
+    private void SetFollowingStatus(List<User> users, List<User> usersFollowing, Model model) {
+        HashMap<String, Boolean> followingStatus = new HashMap<>();
+        String username = userService.getLoggedInUser().getUsername();
+        for (User user : users) {
+            if (usersFollowing.contains(user)) {
+                followingStatus.put(user.getUsername(), true);
+            } else if (!user.getUsername().equals(username)) {
+                followingStatus.put(user.getUsername(), false);
+            }
+        }
+        model.addAttribute("followingStatus", followingStatus);
+    }
+
 }
