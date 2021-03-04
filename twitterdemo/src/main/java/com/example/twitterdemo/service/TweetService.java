@@ -7,10 +7,10 @@ import com.example.twitterdemo.model.User;
 import com.example.twitterdemo.repository.TagRepository;
 import com.example.twitterdemo.repository.TweetRepository;
 import org.ocpsoft.prettytime.PrettyTime;
-import org.ocpsoft.prettytime.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
