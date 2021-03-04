@@ -1,6 +1,7 @@
 package com.example.twitterdemo.controller;
 
 import com.example.twitterdemo.model.Tweet;
+import com.example.twitterdemo.model.TweetDisplay;
 import com.example.twitterdemo.model.User;
 import com.example.twitterdemo.service.TweetService;
 import com.example.twitterdemo.service.UserService;
@@ -26,7 +27,8 @@ public class TweetController {
 
     @GetMapping(value= {"/tweets", "/"})
     public String getFeed(Model model){
-        List<Tweet> tweets = tweetService.findAll();
+        List<TweetDisplay> tweets = tweetService.findAll();
+        model.addAttribute("tweetList", tweets);
         model.addAttribute("tweetList", tweets);
         return "feed";
     }
@@ -51,7 +53,7 @@ public class TweetController {
 
     @GetMapping(value = "/tweets/{tag}")
     public String getTweetsByTag(@PathVariable(value="tag") String tag, Model model) {
-        List<Tweet> tweets = tweetService.findAllWithTag(tag);
+        List<TweetDisplay> tweets = tweetService.findAllWithTag(tag);
         model.addAttribute("tweetList", tweets);
         model.addAttribute("tag", tag);
         return "taggedTweets";
