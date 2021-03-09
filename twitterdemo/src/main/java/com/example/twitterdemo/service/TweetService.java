@@ -78,7 +78,7 @@ public class TweetService {
     private List<TweetDisplay> formatTimestamps(List<Tweet> tweets) {
         List<TweetDisplay> response = new ArrayList<>();
         PrettyTime prettyTime = new PrettyTime();
-        SimpleDateFormat simpleDate = new SimpleDateFormat("m/d/yy");
+        SimpleDateFormat simpleDate = new SimpleDateFormat("M/d/yy");
         Date now = new Date();
         for(Tweet tweet : tweets) {
             TweetDisplay tweetDisplay = new TweetDisplay();
